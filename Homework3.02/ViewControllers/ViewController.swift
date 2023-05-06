@@ -25,9 +25,16 @@ extension ViewController {
                 return
             }
             
-            let decoder = JSONDecoder()
-            let coins = try? decoder.decode([Coin].self, from: data)
-            print(coins?.first ?? "error in fetching coins")
+            do {
+                let decoder = JSONDecoder()
+                let coins = try decoder.decode([Coin].self, from: data)
+                
+                for coin in coins {
+                    print(coin.description)
+                }
+            } catch {
+                print("Decoding error")
+            }
         }.resume()
     }
 }

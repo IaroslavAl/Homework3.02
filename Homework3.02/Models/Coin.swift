@@ -5,26 +5,39 @@
 //  Created by Iaroslav Beldin on 05.05.2023.
 //
 
+//import Foundation
+
 struct Coin: Decodable {
     let symbol: String
-    let priceChange: String
     let priceChangePercent: String
-    let weightedAvgPrice: String
-    let prevClosePrice: String
-    let lastPrice: String
-    let lastQty: String
     let bidPrice: String
-    let bidQty: String
     let askPrice: String
-    let askQty: String
-    let openPrice: String
-    let highPrice: String
-    let lowPrice: String
-    let volume: String
-    let quoteVolume: String
-    let openTime: Int
-    let closeTime: Int
-    let firstId: Int
-    let lastId: Int
-    let count: Int
+    
+    var description: String {
+        "Пара: \(symbol), Изменения за 24ч: \(roundUp(priceChangePercent))%, Цена покупки: \(removeZeros(bidPrice)), Цена продажи: \(removeZeros(askPrice))"
+    }
+    
+    private func removeZeros(_ string: String) -> String {
+        let parts = string.split(separator: ".")
+        if parts.count == 2 {
+            let intPart = parts[0]
+            var decimalPart = String(parts[1])
+            while decimalPart.last == "0" {
+                decimalPart = String(decimalPart.dropLast())
+            }
+            let result = "\(intPart).\(decimalPart)"
+            return result
+        }
+        
+        return string
+    }
+    
+    private func roundUp(_ string: String) -> String {
+        if let double = Double(string) {
+            let result = String(format: "%.2f", double)
+            return result
+        }
+        
+        return string
+    }
 }
